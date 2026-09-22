@@ -3636,6 +3636,10 @@
             const match=source.slice(i).match(/^\\([a-zA-Z]+)/);
             if(match){i+=match[0].length-1;continue;}
           }
+          if(source[i]==='<'){
+            const tagMatch=source.slice(i).match(/^<\/?(?:b|i|u|strong|em|br|hr|p|div|span|ul|ol|li|sup|sub)(?:\s+[^>]*)?>/i);
+            if(tagMatch){html+=tagMatch[0];i+=tagMatch[0].length-1;continue;}
+          }
           html+=escapeHtml(source[i]);
         }
         return html;
