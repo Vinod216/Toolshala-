@@ -328,6 +328,8 @@
           ? './3rd-grade-mock-test-6.html'
           : teachingExamSlug === '3rd-grade' && testNumber === 7
           ? './3rd-grade-mock-test-7.html'
+          : teachingExamSlug === '3rd-grade' && testNumber === 8
+          ? './3rd-grade-mock-test-8.html'
           : teachingExamSlug === 'ptet' && testNumber === 1
           ? './ptet-mock-test-1.html'
           : teachingExamSlug === 'ptet' && testNumber === 2
