@@ -3645,7 +3645,7 @@
         return html;
       }
       function formatText(value=''){
-        const normalized=String(value).replace(/\$\$([\s\S]*?)\$\$/g,(_,math)=>`@@DISPLAY:${renderLatexMath(math)}@@`).replace(/\$([^$\n]+)\$/g,(_,math)=>`@@INLINE:${renderLatexMath(math)}@@`);
+        const normalized=String(value).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\$\$([\s\S]*?)\$\$/g,(_,math)=>`@@DISPLAY:${renderLatexMath(math)}@@`).replace(/\$([^$\n]+)\$/g,(_,math)=>`@@INLINE:${renderLatexMath(math)}@@`);
         return normalized.split(/(@@(?:DISPLAY|INLINE):[\s\S]*?@@)/).map((part)=>{
           if(part.startsWith('@@DISPLAY:')) return `<span class="math-display">${part.slice(10,-2)}</span>`;
           if(part.startsWith('@@INLINE:')) return `<span class="math-inline">${part.slice(9,-2)}</span>`;
