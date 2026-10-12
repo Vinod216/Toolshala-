@@ -7,13 +7,110 @@
   const state = { current: 0, answers: {}, checked: {} };
 
   const $ = (id) => document.getElementById(id);
-  const escapeHtml = (value = '') => String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-  const formatPreservedText = (value = '') => escapeHtml(value).replace(/&lt;br\s*\/?&gt;/gi, '<br>').replace(/\r?\n/g, '<br>');
+  const escapeHtml = (v = '') => String(v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function readBrace(source, start) {
+    if (source[start] !== '{') return { content: '', end: start };
+    let depth = 0, content = '';
+    for (let i = start; i < source.length; i += 1) {
+      const char = source[i];
+      if (char === '{' && source[i - 1] !== '\\') {
+        if (depth > 0) content += char;
+        depth += 1;
+        continue;
+      }
+      if (char === '}' && source[i - 1] !== '\\') {
+        depth -= 1;
+        if (depth === 0) return { content, end: i + 1 };
+        content += char;
+        continue;
+      }
+      if (depth > 0) content += char;
+    }
+    return { content, end: source.length };
+  }
+
+  function renderArrayEnvironment(content) {
+    const rows = content.replace(/^\{[^}]*\}/, '').split(/\\\\/).map((row) => row.trim()).filter(Boolean);
+    return `<span class="math-array">${rows.map((row) => {
+      const hasLine = /^\\hline\s*/.test(row);
+      const cells = row.replace(/^\\hline\s*/, '').split(/\s*&\s*/).map((cell) => `<span class="math-array-cell">${renderLatexMath(cell.trim())}</span>`).join('');
+      return `<span class="math-array-row ${hasLine ? 'math-hline' : ''}">${cells}</span>`;
+    }).join('')}</span>`;
+  }
+
+  const latexCommands = {
+    '\\left': '', '\\right': '',
+    '\\rightarrow': '→', '\\leftarrow': '←', '\\Rightarrow': '⇒', '\\Leftarrow': '⇐', '\\Leftrightarrow': '⇔', '\\implies': '⇒', '\\iff': '⇔',
+    '\\lambda': 'λ', '\\theta': 'θ', '\\alpha': 'α', '\\beta': 'β', '\\gamma': 'γ', '\\delta': 'δ', '\\pi': 'π', '\\sigma': 'σ', '\\omega': 'ω', '\\mu': 'μ', '\\phi': 'φ', '\\rho': 'ρ', '\\tau': 'τ', '\\Delta': 'Δ', '\\Omega': 'Ω', '\\Sigma': 'Σ',
+    '\\times': '×', '\\div': '÷', '\\cdot': '·', '\\qquad': '&nbsp;&nbsp;&nbsp;&nbsp;', '\\quad': '&nbsp;&nbsp;', '\\propto': '∝', '\\circ': '°', '\\cric': '°', '\\degree': '°',
+    '\\pm': '±', '\\mp': '∓', '\\leq': '≤', '\\ge': '≥', '\\geq': '≥', '\\le': '≤', '\\neq': '≠', '\\approx': '≈', '\\infty': '∞',
+    '\\angle': '∠', '\\triangle': '△', '\\cap': '∩', '\\cup': '∪', '\\hline': ''
+  };
+  const sortedCommandKeys = Object.keys(latexCommands).sort((a, b) => b.length - a.length);
+
+  function renderLatexMath(source = '') {
+    let html = '';
+    for (let i = 0; i < source.length; i += 1) {
+      if (source.startsWith('\\begin{array}', i)) {
+        const end = source.indexOf('\\end{array}', i);
+        if (end >= 0) { html += renderArrayEnvironment(source.slice(i + '\\begin{array}'.length, end)); i = end + '\\end{array}'.length - 1; continue; }
+      }
+      if (source.startsWith('\\frac', i)) {
+        const num = readBrace(source, i + 5), den = readBrace(source, num.end);
+        if (num.end > i + 5 && den.end > num.end) { html += `<span class="math-inline math-fraction"><span class="math-num">${renderLatexMath(num.content)}</span><span class="math-den">${renderLatexMath(den.content)}</span></span>`; i = den.end - 1; continue; }
+      }
+      if (source.startsWith('\\sqrt', i)) {
+        const rad = readBrace(source, i + 5);
+        if (rad.end > i + 5) { html += `<span class="math-root"><span class="math-radical">√</span><span class="math-radicand">${renderLatexMath(rad.content)}</span></span>`; i = rad.end - 1; continue; }
+      }
+      if (source.startsWith('\\text', i)) {
+        const txt = readBrace(source, i + 5);
+        if (txt.end > i + 5) { html += renderLatexMath(txt.content); i = txt.end - 1; continue; }
+      }
+      if (source.startsWith('\\overline', i)) {
+        const over = readBrace(source, i + 9);
+        if (over.end > i + 9) { html += `<span class="math-overline">${renderLatexMath(over.content)}</span>`; i = over.end - 1; continue; }
+      }
+      if (source.startsWith('\\cancel', i)) {
+        const can = readBrace(source, i + 7);
+        if (can.end > i + 7) { html += `<span class="math-cancel">${renderLatexMath(can.content)}</span>`; i = can.end - 1; continue; }
+      }
+      const command = sortedCommandKeys.find((key) => source.startsWith(key, i));
+      if (command) { html += latexCommands[command]; i += command.length - 1; continue; }
+      if (source[i] === '^' || source[i] === '_') {
+        const isSup = source[i] === '^', next = source[i + 1] === '{' ? readBrace(source, i + 1) : { content: source[i + 1] || '', end: i + 2 };
+        html += `<${isSup ? 'sup' : 'sub'}>${renderLatexMath(next.content)}</${isSup ? 'sup' : 'sub'}>`; i = next.end - 1; continue;
+      }
+      if (source[i] === '\\') {
+        const match = source.slice(i).match(/^\\([a-zA-Z]+)/);
+        if (match) { i += match[0].length - 1; continue; }
+      }
+      if (source[i] === '<') {
+        const tagMatch = source.slice(i).match(/^<\/?(?:b|i|u|strong|em|br|hr|p|div|span|ul|ol|li|sup|sub)(?:\s+[^>]*)?>/i);
+        if (tagMatch) { html += tagMatch[0]; i += tagMatch[0].length - 1; continue; }
+      }
+      html += escapeHtml(source[i]);
+    }
+    return html;
+  }
+
+  function formatText(value = '') {
+    const normalized = String(value)
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\\cric/g, '°')
+      .replace(/\\\[([\s\S]*?)\\\]/g, (_, math) => `$$${math}$$`)
+      .replace(/\\\(([\s\S]*?)\\\)/g, (_, math) => `$${math}$`)
+      .replace(/\$\$([\s\S]*?)\$\$/g, (_, math) => `@@DISPLAY:${renderLatexMath(math)}@@`)
+      .replace(/\$([^$\n]+)\$/g, (_, math) => `@@INLINE:${renderLatexMath(math)}@@`);
+    return normalized.split(/(@@(?:DISPLAY|INLINE):[\s\S]*?@@)/).map((part) => {
+      if (part.startsWith('@@DISPLAY:')) return `<span class="math-display">${part.slice(10, -2)}</span>`;
+      if (part.startsWith('@@INLINE:')) return `<span class="math-inline">${part.slice(9, -2)}</span>`;
+      return renderLatexMath(part).replace(/&lt;br\s*\/?&gt;/gi, '<br>').replace(/\r?\n/g, '<br>');
+    }).join('');
+  }
+
+  const formatPreservedText = (value = '') => formatText(value);
   const renderLabelBlock = (title, content = '') => `<div class="question-block"><span class="question-block-title">${title}</span><div>${formatPreservedText(content)}</div></div>`;
   const embeddedOptionLine = /^\s*(?:[A-D]|[एबीसीडी])\s*[.)।:-]\s+/;
   const optionGuideLabel = /^(.*?)(?:\n\s*)?((?:सही\s+|अशुद्ध वाक्यों का\s+|असंगत\s+)?कूट|विकल्प)(?:\s*\([^)]*\))?\s*[:：]\s*(.*)$/is;
