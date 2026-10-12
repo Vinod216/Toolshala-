@@ -21,6 +21,7 @@
     <meta name="twitter:title" content="3rd Grade Mock Test 3 | REET Mains Level 1 Practice | ToolShala" />
     <meta name="twitter:description" content="Syllabus-based 3rd Grade Mock Test 3 for Rajasthan teacher exam preparation with timer and review." />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./question-content-renderer.js"></script>
     <link rel="stylesheet" href="../../styles.css" />
 
     <style>
@@ -2595,14 +2596,7 @@
         }
         return html;
       }
-      function formatText(value=''){
-        const normalized=String(value).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\\cric/g, '°').replace(/\$\$([\s\S]*?)\$\$/g,(_,math)=>`@@DISPLAY:${renderLatexMath(math)}@@`).replace(/\$([^$\n]+)\$/g,(_,math)=>`@@INLINE:${renderLatexMath(math)}@@`);
-        return normalized.split(/(@@(?:DISPLAY|INLINE):[\s\S]*?@@)/).map((part)=>{
-          if(part.startsWith('@@DISPLAY:')) return `<span class="math-display">${part.slice(10,-2)}</span>`;
-          if(part.startsWith('@@INLINE:')) return `<span class="math-inline">${part.slice(9,-2)}</span>`;
-          return renderLatexMath(part).replace(/\r?\n/g,'<br>');
-        }).join('');
-      }
+      function formatText(value=''){return window.ToolshalaQuestionContentRenderer.render(value);}
       const formatMatchingLines=(value='')=>String(value).split(/\r?\n/).filter((line)=>line.trim()).map((line)=>`<div class="matching-item">${formatText(line.trim())}</div>`).join('');
       const renderLabelBlock=(title,content='')=>`<div class="question-block"><span class="question-block-title">${title}</span><div>${formatText(content)}</div></div>`;
       const parseAssertionReason=(q='')=>{const cleanQ=String(q).replace(/\*\*/g,'').replace(/^\s*\*\s*/gm,'');const m=cleanQ.match(/(.*?)(कथन|अभिकथन)\s*\(A\)\s*[:：](.*?)(कारण|तर्क)\s*\(R\)\s*[:：](.*)$/is);if(!m) return null;return {intro:m[1].trim(),statementLabel:`${m[2].trim()} (A):`,statement:m[3].trim(),reasonLabel:`${m[4].trim()} (R):`,reason:m[5].trim()};};

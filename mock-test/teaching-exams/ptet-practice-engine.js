@@ -13,7 +13,7 @@
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-  const formatPreservedText = (value = '') => escapeHtml(value).replace(/&lt;br\s*\/?&gt;/gi, '<br>').replace(/\r?\n/g, '<br>');
+  const formatPreservedText = (value = '') => window.ToolshalaQuestionContentRenderer.render(value);
   const renderLabelBlock = (title, content = '') => `<div class="question-block"><span class="question-block-title">${title}</span><div>${formatPreservedText(content)}</div></div>`;
   const embeddedOptionLine = /^\s*(?:[A-D]|[एबीसीडी])\s*[.)।:-]\s+/;
   const optionGuideLabel = /^(.*?)(?:\n\s*)?((?:सही\s+|अशुद्ध वाक्यों का\s+|असंगत\s+)?कूट|विकल्प)(?:\s*\([^)]*\))?\s*[:：]\s*(.*)$/is;

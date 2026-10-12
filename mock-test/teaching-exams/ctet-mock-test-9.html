@@ -21,6 +21,7 @@
     <meta name="twitter:title" content="CTET Mock Test 9 | 150 Questions Online Practice | ToolShala" />
     <meta name="twitter:description" content="Attempt CTET Mock Test 9 online with 150 questions, 150-minute timer, answer key, explanations, and CTET exam preparation practice for CDP, Language, Mathematics and EVS." />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./question-content-renderer.js"></script>
     <link rel="stylesheet" href="../../styles.css" />
 
     <style>
@@ -3071,7 +3072,7 @@
         }
         return html;
       };
-      const formatPreservedText=(value='')=>renderMathExpression(value)
+      const formatPreservedText=(value='')=>window.ToolshalaQuestionContentRenderer.render(value)
         .replace(/&lt;br\s*\/?&gt;/gi,'<br>')
         .replace(/\r?\n/g,'<br>');
       const formatMatchingLines=(value='')=>String(value).split(/\r?\n/).filter((line)=>line.trim()).map((line)=>`<div class="matching-item">${formatPreservedText(line.trim())}</div>`).join('');

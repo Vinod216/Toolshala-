@@ -18,6 +18,7 @@
     <meta property="og:url" content="https://toolshala.in/mock-test/teaching-exams/reet-mock-test-9.html" />
     <meta property="og:type" content="website" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./question-content-renderer.js"></script>
     <link rel="stylesheet" href="../../styles.css" />
 
     <style>
@@ -2971,7 +2972,7 @@
         }
         return html;
       };
-      const formatPreservedText=(value='')=>renderMathExpression(value)
+      const formatPreservedText=(value='')=>window.ToolshalaQuestionContentRenderer.render(value)
         .replace(/&lt;br\s*\/?&gt;/gi,'<br>')
         .replace(/\r?\n/g,'<br>');
       const formatMatchingLines=(value='')=>String(value).split(/\r?\n/).filter((line)=>line.trim()).map((line)=>`<div class="matching-item">${formatPreservedText(line.trim())}</div>`).join('');
