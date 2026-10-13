@@ -50,7 +50,7 @@
       .answer-pill.correct { border-color:rgb(34 197 94); background:rgb(220 252 231); color:rgb(22 101 52); }
       .answer-pill.skipped { border-color:rgb(245 158 11); background:rgb(254 243 199); color:rgb(146 64 14); }
       .empty-review { border:1px dashed rgb(203 213 225); border-radius:.9rem; padding:1rem; color:rgb(71 85 105); background:rgb(248 250 252); }
-      .matching-grid { display:grid; gap:.75rem; margin-top:.75rem; grid-template-columns: 1fr 1fr; }
+      .matching-grid { display:grid; gap:.75rem; margin-top:.75rem; }
       .matching-list { border:1px solid rgb(226 232 240); border-radius:.75rem; padding:.75rem; background:rgb(248 250 252); }
       .matching-options-label { margin:.75rem 0 .35rem; font-weight:700; color:rgb(51 65 85); }
       .matching-list-content { display:block; }
@@ -73,13 +73,9 @@
       #main-content > .section-wrap { padding-top: clamp(1.5rem, 4vw, 2.5rem); padding-bottom: clamp(1.5rem, 4vw, 2.5rem); }
       #intro-area.section-wrap { padding-top: clamp(1rem, 3vw, 1.75rem); }
       #result-area.section-wrap { padding-top: clamp(1.5rem, 4vw, 2.5rem); }
-
+      @media (min-width: 640px) { .matching-grid { grid-template-columns: 1fr 1fr; } }
     </style>
-
-    <!-- KaTeX for Math Rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-</head>
+  </head>
   <body class="bg-white text-slate-800">
     <header class="top-nav sticky top-0 z-50"><nav class="nav-shell" aria-label="Main navigation"><a href="../../index.html" class="brand-logo" aria-label="ToolShala home"><span class="brand-mark">ToolShala</span><span class="brand-dot" aria-hidden="true"></span></a><div class="hidden items-center gap-2 md:flex"><a class="nav-link" href="../../index.html">Home</a><a class="nav-link nav-active" href="../../mock-test.html">Mock Test</a><a class="nav-link" href="../../about.html">About</a><a class="nav-link" href="../../contact.html">Contact</a></div></nav></header>
     <main id="main-content">
@@ -2508,50 +2504,71 @@ const testConfig=thirdGradeMockTest9;
       const startBtn=document.getElementById('start-test'), timerEl=document.getElementById('timer'), testArea=document.getElementById('test-area'), resultArea=document.getElementById('result-area'), questionMeta=document.getElementById('question-meta'), sectionTag=document.getElementById('section-tag'), questionText=document.getElementById('question-text'), optionsWrap=document.getElementById('options'), palette=document.getElementById('palette'), matchingBlock=document.getElementById('matching-block');
       const escapeHtml=(v='')=>String(v).replace(/[&<>"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
       const formatTime=(seconds)=>{const h=String(Math.floor(seconds/3600)).padStart(2,'0'),m=String(Math.floor((seconds%3600)/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0');return `${h}:${m}:${s}`;};
-
-
-
-
-      function formatText(value='') {
-        let normalized = String(value)
-          // Handle markdown bold
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-          // Fix typos like \cric
-          .replace(/\\cric/g, '^{\\circ}')
-          .replace(/\cric/g, '^{\\circ}');
-
-        // Use a placeholder approach to prevent math blocks from being mangled by HTML escaping
-        const parts = [];
-        let temp = normalized.replace(/\$\$([\s\S]*?)\$\$/g, (_, math) => {
-          parts.push({ type: 'display', math });
-          return `@@MATH${parts.length - 1}@@`;
-        }).replace(/\$([^$\n]+)\$/g, (_, math) => {
-          parts.push({ type: 'inline', math });
-          return `@@MATH${parts.length - 1}@@`;
-        });
-
-        // Basic newlines to <br> for plain text
-        temp = temp.replace(/\r?\n/g, '<br>');
-
-        // Render math back
-        return temp.replace(/@@MATH(\d+)@@/g, (_, index) => {
-          const item = parts[Number(index)];
-          try {
-            if (typeof katex !== 'undefined') {
-              return katex.renderToString(item.math, {
-                displayMode: item.type === 'display',
-                throwOnError: false,
-                trust: true
-              });
-            }
-            return item.type === 'display' ? `<div class="math-display">\\[${item.math}\\]</div>` : `<span class="math-inline">\\(${item.math}\\)</span>`;
-          } catch (e) {
-            console.warn('KaTeX render error:', e);
-            return `<span class="math-error">${item.math}</span>`;
-          }
-        });
+      function readBrace(source,start){
+        if(source[start]!=='{') return {content:'',end:start};
+        let depth=0,content='';
+        for(let i=start;i<source.length;i+=1){
+          const char=source[i];
+          if(char==='{' && source[i-1] !== '\\'){if(depth>0) content+=char;depth+=1;continue;}
+          if(char==='}' && source[i-1] !== '\\'){depth-=1;if(depth===0) return {content,end:i+1};content+=char;continue;}
+          if(depth>0) content+=char;
+        }
+        return {content,end:source.length};
       }
-
+      function renderArrayEnvironment(content){
+        const rows=content.replace(/^\{[^}]*\}/,'').split(/\\\\/).map((row)=>row.trim()).filter(Boolean);
+        return `<span class="math-array">${rows.map((row)=>{
+          const hasLine=/^\\hline\s*/.test(row);
+          const cells=row.replace(/^\\hline\s*/,'').split(/\s*&\s*/).map((cell)=>`<span class="math-array-cell">${renderLatexMath(cell.trim())}</span>`).join('');
+          return `<span class="math-array-row ${hasLine?'math-hline':''}">${cells}</span>`;
+        }).join('')}</span>`;
+      }
+      function renderLatexMath(source=''){
+        let html='';
+        for(let i=0;i<source.length;i+=1){
+          if(source.startsWith('\\begin{array}',i)){
+            const end=source.indexOf('\\end{array}',i);
+            if(end>=0){html+=renderArrayEnvironment(source.slice(i+'\\begin{array}'.length,end));i=end+'\\end{array}'.length-1;continue;}
+          }
+          if(source.startsWith('\\frac',i)){
+            const num=readBrace(source,i+5), den=readBrace(source,num.end);
+            if(num.end>i+5 && den.end>num.end){html+=`<span class="math-inline math-fraction"><span class="math-num">${renderLatexMath(num.content)}</span><span class="math-den">${renderLatexMath(den.content)}</span></span>`;i=den.end-1;continue;}
+          }
+          if(source.startsWith('\\sqrt',i)){
+            const rad=readBrace(source,i+5);
+            if(rad.end>i+5){html+=`<span class="math-root"><span class="math-radical">√</span><span class="math-radicand">${renderLatexMath(rad.content)}</span></span>`;i=rad.end-1;continue;}
+          }
+          if(source.startsWith('\\overline',i)){
+            const over=readBrace(source,i+9);
+            if(over.end>i+9){html+=`<span class="math-overline">${renderLatexMath(over.content)}</span>`;i=over.end-1;continue;}
+          }
+          const commands={"\\times":"×","\\div":"÷","\\cdot":"·","\\quad":"&nbsp;&nbsp;","\\propto":"∝","\\pi":"π","\\circ":"°","\\cric":"°","\\implies":"⇒","\\hline":""};
+          const command=Object.keys(commands).find((key)=>source.startsWith(key,i));
+          if(command){html+=commands[command];i+=command.length-1;continue;}
+          if(source[i]==='^' || source[i]==='_'){
+            const isSup=source[i]==='^', next=source[i+1]==='{'?readBrace(source,i+1):{content:source[i+1]||'',end:i+2};
+            html+=`<${isSup?'sup':'sub'}>${renderLatexMath(next.content)}</${isSup?'sup':'sub'}>`;i=next.end-1;continue;
+          }
+          if(source[i]==='\\'){
+            const match=source.slice(i).match(/^\\([a-zA-Z]+)/);
+            if(match){html+=escapeHtml(source.slice(i, i+match[0].length));i+=match[0].length-1;continue;}
+          }
+          if(source[i]==='<'){
+            const tagMatch=source.slice(i).match(/^<\/?(?:b|i|u|strong|em|br|hr|p|div|span|ul|ol|li|sup|sub)(?:\s+[^>]*)?>/i);
+            if(tagMatch){html+=tagMatch[0];i+=tagMatch[0].length-1;continue;}
+          }
+          html+=escapeHtml(source[i]);
+        }
+        return html;
+      }
+      function formatText(value=''){
+        const normalized=String(value).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\\cric/g, '°').replace(/\$\$([\s\S]*?)\$\$/g,(_,math)=>`@@DISPLAY:${renderLatexMath(math)}@@`).replace(/\$([^$\n]+)\$/g,(_,math)=>`@@INLINE:${renderLatexMath(math)}@@`);
+        return normalized.split(/(@@(?:DISPLAY|INLINE):[\s\S]*?@@)/).map((part)=>{
+          if(part.startsWith('@@DISPLAY:')) return `<span class="math-display">${part.slice(10,-2)}</span>`;
+          if(part.startsWith('@@INLINE:')) return `<span class="math-inline">${part.slice(9,-2)}</span>`;
+          return renderLatexMath(part).replace(/\r?\n/g,'<br>');
+        }).join('');
+      }
       const formatMatchingLines=(value='')=>String(value).split(/\r?\n/).filter((line)=>line.trim()).map((line)=>`<div class="matching-item">${formatText(line.trim())}</div>`).join('');
       const renderLabelBlock=(title,content='')=>`<div class="question-block"><span class="question-block-title">${title}</span><div>${formatText(content)}</div></div>`;
       const parseAssertionReason=(q='')=>{const cleanQ=String(q).replace(/\*\*/g,'').replace(/^\s*\*\s*/gm,'');const m=cleanQ.match(/(.*?)(कथन|अभिकथन)\s*\(A\)\s*[:：](.*?)(कारण|तर्क)\s*\(R\)\s*[:：](.*)$/is);if(!m) return null;return {intro:m[1].trim(),statementLabel:`${m[2].trim()} (A):`,statement:m[3].trim(),reasonLabel:`${m[4].trim()} (R):`,reason:m[5].trim()};};
