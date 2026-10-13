@@ -47,12 +47,16 @@
       .answer-pill.correct { border-color:rgb(34 197 94); background:rgb(220 252 231); color:rgb(22 101 52); }
       .answer-pill.skipped { border-color:rgb(245 158 11); background:rgb(254 243 199); color:rgb(146 64 14); }
       .empty-review { border:1px dashed rgb(203 213 225); border-radius:.9rem; padding:1rem; color:rgb(71 85 105); background:rgb(248 250 252); }
-      .matching-grid { display:grid; gap:.75rem; margin-top:.75rem; }
+      .matching-grid { display:grid; gap:.75rem; margin-top:.75rem; grid-template-columns: 1fr 1fr; }
       .matching-list { border:1px solid rgb(226 232 240); border-radius:.75rem; padding:.75rem; background:rgb(248 250 252); }
       #test-intro { display:block; visibility:visible; opacity:1; position:relative; z-index:1; }
-      @media (min-width: 640px) { .matching-grid { grid-template-columns: 1fr 1fr; } }
+
     </style>
-  </head>
+
+    <!-- KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+</head>
   <body class="bg-white text-slate-800">
     <header class="top-nav sticky top-0 z-50"><nav class="nav-shell" aria-label="Main navigation"><a href="../../index.html" class="brand-logo" aria-label="ToolShala home"><span class="brand-mark">ToolShala</span><span class="brand-dot" aria-hidden="true"></span></a><div class="hidden items-center gap-2 md:flex"><a class="nav-link" href="../../index.html">Home</a><a class="nav-link nav-active" href="../../mock-test.html">Mock Test</a><a class="nav-link" href="../../about.html">About</a><a class="nav-link" href="../../contact.html">Contact</a></div></nav></header>
     <main id="main-content">

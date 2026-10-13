@@ -65,9 +65,13 @@
       .math-radicand { border-top:1px solid currentColor; padding:.02rem .08rem 0 .08rem; line-height:1.25; }
       .math-overline { text-decoration: overline; text-decoration-thickness: 1px; }
       #test-intro { display:block; visibility:visible; opacity:1; position:relative; z-index:1; }
-      @media (min-width: 640px) { .matching-grid { grid-template-columns: 1fr 1fr; } }
+
     </style>
-  </head>
+
+    <!-- KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+</head>
   <body class="bg-white text-slate-800">
     <header class="top-nav sticky top-0 z-50"><nav class="nav-shell" aria-label="Main navigation"><a href="../../index.html" class="brand-logo" aria-label="ToolShala home"><span class="brand-mark">ToolShala</span><span class="brand-dot" aria-hidden="true"></span></a><div class="hidden items-center gap-2 md:flex"><a class="nav-link" href="../../index.html">Home</a><a class="nav-link nav-active" href="../../mock-test.html">Mock Test</a><a class="nav-link" href="../../about.html">About</a><a class="nav-link" href="../../contact.html">Contact</a></div></nav></header>
     <main id="main-content">
