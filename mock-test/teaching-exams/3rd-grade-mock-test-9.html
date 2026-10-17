@@ -2542,8 +2542,12 @@ const testConfig=thirdGradeMockTest9;
             const over=readBrace(source,i+9);
             if(over.end>i+9){html+=`<span class="math-overline">${renderLatexMath(over.content)}</span>`;i=over.end-1;continue;}
           }
-          const commands={"\\times":"×","\\div":"÷","\\cdot":"·","\\quad":"&nbsp;&nbsp;","\\propto":"∝","\\pi":"π","\\circ":"°","\\cric":"°","\\implies":"⇒","\\hline":""};
-          const command=Object.keys(commands).find((key)=>source.startsWith(key,i));
+          if(source.startsWith('\\text',i)){
+            const txt=readBrace(source,i+5);
+            if(txt.end>i+5){html+=`<span class="math-text">${escapeHtml(txt.content)}</span>`;i=txt.end-1;continue;}
+          }
+          const commands={"\\times":"×","\\div":"÷","\\cdot":"·","\\quad":"&nbsp;&nbsp;","\\propto":"∝","\\pi":"π","\\circ":"°","\\cric":"°","\\implies":"⇒","\\hline":"","\\left":"","\\right":"","\\rightarrow":"→","\\lambda":"λ","\\theta":"θ"};
+          const command=Object.keys(commands).sort((a,b)=>b.length-a.length).find((key)=>source.startsWith(key,i));
           if(command){html+=commands[command];i+=command.length-1;continue;}
           if(source[i]==='^' || source[i]==='_'){
             const isSup=source[i]==='^', next=source[i+1]==='{'?readBrace(source,i+1):{content:source[i+1]||'',end:i+2};
