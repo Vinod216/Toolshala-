@@ -2546,7 +2546,7 @@ const testConfig=thirdGradeMockTest9;
             const txt=readBrace(source,i+5);
             if(txt.end>i+5){html+=`<span class="math-text">${escapeHtml(txt.content)}</span>`;i=txt.end-1;continue;}
           }
-          const commands={"\\times":"×","\\div":"÷","\\cdot":"·","\\quad":"&nbsp;&nbsp;","\\propto":"∝","\\pi":"π","\\circ":"°","\\cric":"°","\\implies":"⇒","\\hline":"","\\left":"","\\right":"","\\rightarrow":"→","\\lambda":"λ","\\theta":"θ"};
+          const commands={"\\times":"×","\\div":"÷","\\cdot":"·","\\quad":"&nbsp;&nbsp;","\\propto":"∝","\\pi":"π","\\circ":"°","\\cric":"°","\\implies":"⇒","\\hline":"","\\left":"","\\right":"","\\rightarrow":"→","\\lambda":"λ","\\theta":"θ","\\ne":"≠","\\Rightarrow":"⇒","\\leftrightarrow":"↔","\\cos":"cos"};
           const command=Object.keys(commands).sort((a,b)=>b.length-a.length).find((key)=>source.startsWith(key,i));
           if(command){html+=commands[command];i+=command.length-1;continue;}
           if(source[i]==='^' || source[i]==='_'){
