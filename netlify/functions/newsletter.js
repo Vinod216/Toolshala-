@@ -111,7 +111,7 @@ const getSupabaseConfigError = ({ url, insertKey, urlError }, storageLabel) => {
   return '';
 };
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: corsHeaders, body: '' };
   if (event.httpMethod !== 'POST') return jsonResponse(405, { error: 'Method not allowed. Use POST.' });
   if (isBodyTooLarge(event.body)) return jsonResponse(413, { error: 'Request payload is too large.' });
