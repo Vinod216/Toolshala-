@@ -177,6 +177,19 @@
     10: 'Final BSTC full-length practice set for complete self-check before exam day with overall readiness review.'
   };
 
+  const thirdGradeMockDescriptions = {
+    1: '3rd Grade full-length starter mock with 150 questions and a 150-minute timer covering the updated REET Mains Level 1 pattern.',
+    2: '3rd Grade practice test with 150 questions and a 150-minute timer for balanced subject coverage, speed, and accuracy.',
+    3: 'Section-balanced 3rd Grade mock with 150 questions and a 150-minute timer for focused syllabus revision.',
+    4: '3rd Grade exam-pattern simulation with 150 questions and a 150-minute timer to practise attempt strategy and time control.',
+    5: 'Mid-preparation 3rd Grade mock with 150 questions and a 150-minute timer for tracking full-paper readiness.',
+    6: '3rd Grade revision test with 150 questions and a 150-minute timer to identify weak areas across the updated syllabus.',
+    7: '3rd Grade exam-style mock with 150 questions and a 150-minute timer for consistent section-wise practice.',
+    8: 'Advanced 3rd Grade practice set with 150 questions and a 150-minute timer for complete syllabus coverage.',
+    9: 'Near-exam 3rd Grade simulation with 150 questions and a 150-minute timer to refine final strategy and accuracy.',
+    10: 'Final 3rd Grade full-length mock with 150 questions and a 150-minute timer for complete self-assessment.'
+  };
+
   function cardForExam(exam, ctaText = 'Start Mock Test') {
     return `<article class="feature-card reveal"><p class="template-badge">${exam.difficulty || 'All levels'}</p><h3 class="mt-3">${exam.title}</h3><p>${exam.description}</p><p class="template-meta">${exam.questionsCount || 50} questions • ${exam.duration || '60 min'}</p><div class="template-actions mt-4"><a href="${exam.ctaLink}" class="btn-primary" aria-label="${ctaText} for ${exam.title}">${ctaText}</a></div></article>`;
   }
@@ -417,7 +430,9 @@
               : `../exam.html?exam=${exam.slug}`;
         return cardForExam({
           ...exam,
-          ...(teachingExamSlug === 'ctet' ? { questionsCount: 150, duration: '150 min' } : {}),
+          ...(teachingExamSlug === '3rd-grade' || teachingExamSlug === 'ctet'
+            ? { questionsCount: 150, duration: '150 min' }
+            : {}),
           ctaLink: customCtaLink,
           title: `${exam.title} Mock Test ${testNumber}`,
           description: teachingExamSlug === 'bstc'
@@ -428,7 +443,9 @@
                 ? (reetMockDescriptions[testNumber] || `REET Mock Test ${testNumber} with 150 questions and a 150-minute timer for full-length exam practice.`)
                 : teachingExamSlug === 'ctet'
                   ? `CTET Mock Test ${testNumber} online practice with 150 questions, 150-minute timer, answer key, explanations, and syllabus-focused exam preparation.`
-                  : `Mock Test ${testNumber} for ${exam.title} with exam-pattern questions and balanced difficulty coverage.`
+                    : teachingExamSlug === '3rd-grade'
+                      ? thirdGradeMockDescriptions[testNumber]
+                      : `Mock Test ${testNumber} for ${exam.title} with exam-pattern questions and balanced difficulty coverage.`
         });
       }).join('');
     }
