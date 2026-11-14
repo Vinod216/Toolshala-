@@ -329,6 +329,8 @@
         const testNumber = index + 1;
         const customCtaLink = teachingExamSlug === '3rd-grade' && testNumber === 1
           ? './3rd-grade-mock-test-1.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 1
+          ? './2nd-grade-mock-test-1.html'
           : teachingExamSlug === '3rd-grade' && testNumber === 2
           ? './3rd-grade-mock-test-2.html'
           : teachingExamSlug === '3rd-grade' && testNumber === 3
@@ -432,6 +434,8 @@
           ...exam,
           ...(teachingExamSlug === '3rd-grade' || teachingExamSlug === 'ctet'
             ? { questionsCount: 150, duration: '150 min' }
+            : teachingExamSlug === '2nd-grade'
+              ? { questionsCount: 100, duration: '120 min' }
             : {}),
           ctaLink: customCtaLink,
           title: `${exam.title} Mock Test ${testNumber}`,
@@ -443,7 +447,9 @@
                 ? (reetMockDescriptions[testNumber] || `REET Mock Test ${testNumber} with 150 questions and a 150-minute timer for full-length exam practice.`)
                 : teachingExamSlug === 'ctet'
                   ? `CTET Mock Test ${testNumber} online practice with 150 questions, 150-minute timer, answer key, explanations, and syllabus-focused exam preparation.`
-                    : teachingExamSlug === '3rd-grade'
+                    : teachingExamSlug === '2nd-grade'
+                      ? `2nd Grade Paper-I Mock Test ${testNumber} with 100 questions and a 120-minute timer for Rajasthan GK, current affairs, India/world GK, and educational psychology practice.`
+                      : teachingExamSlug === '3rd-grade'
                       ? thirdGradeMockDescriptions[testNumber]
                       : `Mock Test ${testNumber} for ${exam.title} with exam-pattern questions and balanced difficulty coverage.`
         });

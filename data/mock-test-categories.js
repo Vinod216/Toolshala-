@@ -27,7 +27,7 @@ window.mockTestData = (() => {
       description: '3rd Grade full-length mock tests with 150 questions and a 150-minute timer, aligned to the updated REET Mains Level 1 exam pattern.',
       practiceIntro: 'Attempt 3rd Grade full-length mock tests with 150 questions and a 150-minute timer to build speed, accuracy, and exam confidence.',
     },
-    '2nd-grade': createExam('2nd-grade', '2nd Grade', 'Teaching Exams', 'Advanced', 75, 60),
+    '2nd-grade': createExam('2nd-grade', '2nd Grade', 'Teaching Exams', 'Advanced', 120, 100),
     '1st-grade': createExam('1st-grade', '1st Grade', 'Teaching Exams', 'Advanced', 90, 75),
     kvs: createExam('kvs', 'KVs', 'Teaching Exams'), dsssb: createExam('dsssb', 'DSSSB', 'Teaching Exams'), pti: createExam('pti', 'PTI', 'Teaching Exams', 'Beginner', 45, 40),
     'assistant-professor': createExam('assistant-professor', 'Assistant Professor', 'Teaching Exams', 'Advanced', 90, 75),
