@@ -337,6 +337,18 @@
           ? './2nd-grade-mock-test-3.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 4
           ? './2nd-grade-mock-test-4.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 5
+          ? './2nd-grade-mock-test-5.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 6
+          ? './2nd-grade-mock-test-6.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 7
+          ? './2nd-grade-mock-test-7.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 8
+          ? './2nd-grade-mock-test-8.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 9
+          ? './2nd-grade-mock-test-9.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 10
+          ? './2nd-grade-mock-test-10.html'
           : teachingExamSlug === '3rd-grade' && testNumber === 2
           ? './3rd-grade-mock-test-2.html'
           : teachingExamSlug === '3rd-grade' && testNumber === 3
