@@ -333,6 +333,10 @@
           ? './2nd-grade-mock-test-1.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 2
           ? './2nd-grade-mock-test-2.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 3
+          ? './2nd-grade-mock-test-3.html'
+          : teachingExamSlug === '2nd-grade' && testNumber === 4
+          ? './2nd-grade-mock-test-4.html'
           : teachingExamSlug === '3rd-grade' && testNumber === 2
           ? './3rd-grade-mock-test-2.html'
           : teachingExamSlug === '3rd-grade' && testNumber === 3
