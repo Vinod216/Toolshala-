@@ -329,6 +329,26 @@
         const testNumber = index + 1;
         const customCtaLink = teachingExamSlug === '3rd-grade' && testNumber === 1
           ? './3rd-grade-mock-test-1.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 1
+          ? './1st-grade-mock-test-1.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 2
+          ? './1st-grade-mock-test-2.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 3
+          ? './1st-grade-mock-test-3.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 4
+          ? './1st-grade-mock-test-4.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 5
+          ? './1st-grade-mock-test-5.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 6
+          ? './1st-grade-mock-test-6.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 7
+          ? './1st-grade-mock-test-7.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 8
+          ? './1st-grade-mock-test-8.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 9
+          ? './1st-grade-mock-test-9.html'
+          : teachingExamSlug === '1st-grade' && testNumber === 10
+          ? './1st-grade-mock-test-10.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 1
           ? './2nd-grade-mock-test-1.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 2
