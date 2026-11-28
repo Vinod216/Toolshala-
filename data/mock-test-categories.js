@@ -21,16 +21,39 @@ window.mockTestData = (() => {
       practiceIntro: 'Attempt REET full-length mock tests with 150 questions and a 150-minute timer to build exam speed, section balance, and confidence.',
       ctaLink: './teaching-exams/reet.html'
     },
-    ctet: createExam('ctet', 'CTET', 'Teaching Exams'),
-    '3rd-grade': {
-      ...createExam('3rd-grade', '3rd GRADE', 'Teaching Exams', 'Intermediate', 150, 150),
-      description: '3rd Grade full-length mock tests with 150 questions and a 150-minute timer, aligned to the updated REET Mains Level 1 exam pattern.',
-      practiceIntro: 'Attempt 3rd Grade full-length mock tests with 150 questions and a 150-minute timer to build speed, accuracy, and exam confidence.',
+    ctet: {
+      ...createExam('ctet', 'CTET', 'Teaching Exams', 'Intermediate', 150, 150),
+      description: 'CTET Paper 1 and Paper 2 full-length mock tests with 150 questions and a 150-minute timer covering Child Development, Languages, Mathematics, EVS, Science & Social Studies.',
+      practiceIntro: 'Attempt CTET full-length mock tests with 150 questions and a 150-minute timer for Paper 1 and Paper 2 readiness.'
     },
-    '2nd-grade': createExam('2nd-grade', '2nd Grade', 'Teaching Exams', 'Advanced', 120, 100),
-    '1st-grade': createExam('1st-grade', '1st Grade', 'Teaching Exams', 'Advanced', 90, 75),
-    kvs: createExam('kvs', 'KVs', 'Teaching Exams'), dsssb: createExam('dsssb', 'DSSSB', 'Teaching Exams'), pti: createExam('pti', 'PTI', 'Teaching Exams', 'Beginner', 45, 40),
+    '3rd-grade': {
+      ...createExam('3rd-grade', '3rd Grade', 'Teaching Exams', 'Intermediate', 150, 150),
+      description: '3rd Grade full-length mock tests with 150 questions and a 150-minute timer, aligned to the updated REET Mains Level 1 exam pattern.',
+      practiceIntro: 'Attempt 3rd Grade full-length mock tests with 150 questions and a 150-minute timer to build speed, accuracy, and exam confidence.'
+    },
+    '2nd-grade': {
+      ...createExam('2nd-grade', '2nd Grade', 'Teaching Exams', 'Advanced', 120, 100),
+      description: 'RPSC 2nd Grade (Senior Teacher) Paper-I full-length mock tests with 100 questions and a 120-minute timer covering Rajasthan GK, Current Affairs, India/World GK & Educational Psychology.',
+      practiceIntro: 'Attempt 2nd Grade Paper-I mock tests with 100 questions and a 120-minute timer for RPSC Senior Teacher preparation.'
+    },
+    '1st-grade': {
+      ...createExam('1st-grade', '1st Grade', 'Teaching Exams', 'Advanced', 90, 75),
+      description: 'RPSC 1st Grade (School Lecturer) Paper-I mock tests with 75 questions and a 90-minute timer covering History, Mental Ability, Maths, Hindi-English, Current Affairs, Science, Polity, Geography & Educational Management.',
+      practiceIntro: 'Attempt 1st Grade Paper-I mock tests with 75 questions and a 90-minute timer for RPSC School Lecturer preparation.'
+    },
+    kvs: {
+      ...createExam('kvs', 'KVS PRT', 'Teaching Exams', 'Intermediate', 120, 100),
+      description: 'KVS PRT Tier-1 mock tests with 100 questions (300 marks) and a 120-minute timer covering General Reasoning, Numeric Ability, Computer Literacy, GK, English & Hindi.',
+      practiceIntro: 'Attempt KVS PRT Tier-1 full-length mock tests with 100 questions and a 120-minute timer to qualify for Tier-2.'
+    },
+    dsssb: createExam('dsssb', 'DSSSB', 'Teaching Exams'),
+    pti: createExam('pti', 'PTI', 'Teaching Exams', 'Beginner', 45, 40),
     'assistant-professor': createExam('assistant-professor', 'Assistant Professor', 'Teaching Exams', 'Advanced', 90, 75),
+    'ugc-net': {
+      ...createExam('ugc-net', 'UGC NET Paper 1', 'Teaching Exams', 'Advanced', 60, 50),
+      description: 'UGC NET Paper 1 (Teaching & Research Aptitude) mock tests with 50 questions (100 marks) and a 60-minute timer covering all 10 official units.',
+      practiceIntro: 'Attempt UGC NET Paper 1 mock tests with 50 questions and a 60-minute timer for JRF and Assistant Professor readiness.'
+    },
     ras: createExam('ras', 'RAS', 'Rajasthan Govt Exams', 'Advanced', 90, 75), 'sub-inspector': createExam('sub-inspector', 'Sub Inspector', 'Rajasthan Govt Exams'),
     constable: createExam('constable', 'Constable', 'Rajasthan Govt Exams', 'Beginner', 45, 40), 'cet-12th': createExam('cet-12th', 'CET 12th', 'Rajasthan Govt Exams', 'Beginner', 45, 40),
     'cet-graduation': createExam('cet-graduation', 'CET Graduation', 'Rajasthan Govt Exams'), vdo: createExam('vdo', 'VDO', 'Rajasthan Govt Exams'), patwar: createExam('patwar', 'Patwar', 'Rajasthan Govt Exams'),
@@ -57,7 +80,7 @@ window.mockTestData = (() => {
   };
 
   const categories = [
-    { slug: 'teaching-exams', title: 'Teaching Exams', description: 'Practice teaching-focused exams with pedagogy and subject coverage.', exams: ['bstc','ptet','reet','ctet','3rd-grade','2nd-grade','1st-grade','kvs','dsssb','pti','assistant-professor'] },
+    { slug: 'teaching-exams', title: 'Teaching Exams', description: 'Practice teaching-focused exams with pedagogy and subject coverage.', exams: ['bstc','ptet','reet','ctet','3rd-grade','2nd-grade','1st-grade','kvs','dsssb','pti','assistant-professor','ugc-net'] },
     { slug: 'rajasthan-govt-exams', title: 'Rajasthan Govt Exams', description: 'State-level mock tests for key Rajasthan recruitment exams.', exams: ['ras','sub-inspector','constable','cet-12th','cet-graduation','vdo','patwar','jail-prahari','lab-assistant','woman-supervisor','librarian','stenographer','ldc'] },
     { slug: 'central-govt-exams', title: 'Central Govt Exams', description: 'Prepare for central recruitments with structured mock tests.', exams: ['ssc-cgl','ssc-gd','delhi-police','ssc-chsl','mts','ntpc','technician-grade-3','technician-grade-1','crpf-constable','army','nda','airforce-x','airforce-y','airforce-x-y'] },
     { slug: 'civil-services-exams', title: 'Civil Services Exams', description: 'Civil services prelims-oriented practice and revision mocks.', exams: ['ras','eo-ro','uppcs','ro-aro','bpsc','upsc','ncert'] },
