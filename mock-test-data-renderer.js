@@ -297,7 +297,12 @@
             title: 'CTET Mock Test 2026 | Online Practice Tests in Hindi & English | ToolShala',
             description: 'Practice CTET mock test online with 10 full-length CTET practice sets, 150-question timer, answer review, syllabus focus, and Hindi-English exam preparation support.'
           }
-        : {
+        : teachingExamSlug === 'kvs'
+          ? {
+              title: 'KVS PRT Tier 1 Mock Tests 1-10 | 100 Questions, 300 Marks | ToolShala',
+              description: 'Practice KVS PRT Mock Test 1 to 10 for Tier-1 with 100 questions, 120-minute timer, General Reasoning, Numeric Ability, Computer Literacy, GK, English and Hindi on ToolShala.'
+            }
+          : {
           title: `${exam.title} Mock Tests | Teaching Exams | ToolShala`,
           description: `Practice ${exam.title} with 10 full-length mock tests, timed questions, and exam-focused preparation on ToolShala.`
         };
@@ -316,13 +321,17 @@
     const examOverview = document.getElementById('teaching-exam-overview');
     const mockList = document.getElementById('teaching-exam-mocks');
 
-    if (examTitle) examTitle.textContent = `${exam.title} Mock Tests`;
+    if (examTitle) examTitle.textContent = teachingExamSlug === 'kvs' ? 'KVS PRT Tier-1 Mock Tests' : `${exam.title} Mock Tests`;
     if (examIntro) examIntro.textContent = teachingExamSlug === 'reet'
       ? 'Prepare for REET with 10 full-length mock tests. Each paper follows a 150-question, 150-minute practice format for pedagogy, language and subject-wise revision.'
       : teachingExamSlug === 'ctet'
         ? 'Prepare for CTET exam preparation with full-length CTET mock test practice, Hindi-English questions, timed online tests, answer review, and syllabus-focused revision.'
-        : `Prepare for ${exam.title} with structured practice. Attempt all 10 mock tests in sequence to improve speed, accuracy, and exam confidence.`;
-    if (examOverview) examOverview.textContent = `${exam.title} practice pack includes 10 mock tests with ${exam.questionsCount || 50} questions each and ${exam.duration || '60 min'} duration.`;
+        : teachingExamSlug === 'kvs'
+          ? 'Prepare for KVS PRT (Primary Teacher) Tier-1 with 10 full-length mock tests. Each paper follows a 100-question, 300-mark, 120-minute practice format across all 6 Tier-1 sections.'
+          : `Prepare for ${exam.title} with structured practice. Attempt all 10 mock tests in sequence to improve speed, accuracy, and exam confidence.`;
+    if (examOverview) examOverview.textContent = teachingExamSlug === 'kvs'
+      ? 'KVS PRT Tier-1 practice pack includes 10 mock tests with 100 questions (300 marks) each and 120 min duration.'
+      : `${exam.title} practice pack includes 10 mock tests with ${exam.questionsCount || 50} questions each and ${exam.duration || '60 min'} duration.`;
 
     if (mockList) {
       mockList.innerHTML = Array.from({ length: 10 }, (_, index) => {
@@ -349,6 +358,26 @@
           ? './1st-grade-mock-test-9.html'
           : teachingExamSlug === '1st-grade' && testNumber === 10
           ? './1st-grade-mock-test-10.html'
+          : teachingExamSlug === 'kvs' && testNumber === 1
+          ? './kvs-prt-mock-test-1.html'
+          : teachingExamSlug === 'kvs' && testNumber === 2
+          ? './kvs-prt-mock-test-2.html'
+          : teachingExamSlug === 'kvs' && testNumber === 3
+          ? './kvs-prt-mock-test-3.html'
+          : teachingExamSlug === 'kvs' && testNumber === 4
+          ? './kvs-prt-mock-test-4.html'
+          : teachingExamSlug === 'kvs' && testNumber === 5
+          ? './kvs-prt-mock-test-5.html'
+          : teachingExamSlug === 'kvs' && testNumber === 6
+          ? './kvs-prt-mock-test-6.html'
+          : teachingExamSlug === 'kvs' && testNumber === 7
+          ? './kvs-prt-mock-test-7.html'
+          : teachingExamSlug === 'kvs' && testNumber === 8
+          ? './kvs-prt-mock-test-8.html'
+          : teachingExamSlug === 'kvs' && testNumber === 9
+          ? './kvs-prt-mock-test-9.html'
+          : teachingExamSlug === 'kvs' && testNumber === 10
+          ? './kvs-prt-mock-test-10.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 1
           ? './2nd-grade-mock-test-1.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 2
@@ -472,11 +501,11 @@
           ...exam,
           ...(teachingExamSlug === '3rd-grade' || teachingExamSlug === 'ctet'
             ? { questionsCount: 150, duration: '150 min' }
-            : teachingExamSlug === '2nd-grade'
+            : teachingExamSlug === '2nd-grade' || teachingExamSlug === 'kvs'
               ? { questionsCount: 100, duration: '120 min' }
             : {}),
           ctaLink: customCtaLink,
-          title: `${exam.title} Mock Test ${testNumber}`,
+          title: teachingExamSlug === 'kvs' ? `KVS PRT Mock Test ${testNumber}` : `${exam.title} Mock Test ${testNumber}`,
           description: teachingExamSlug === 'bstc'
             ? (bstcMockDescriptions[testNumber] || `BSTC full-length practice set ${testNumber} for exam-ready revision and timed preparation.`)
             : teachingExamSlug === 'ptet'
@@ -489,7 +518,9 @@
                       ? `2nd Grade Paper-I Mock Test ${testNumber} with 100 questions and a 120-minute timer for Rajasthan GK, current affairs, India/world GK, and educational psychology practice.`
                       : teachingExamSlug === '3rd-grade'
                       ? thirdGradeMockDescriptions[testNumber]
-                      : `Mock Test ${testNumber} for ${exam.title} with exam-pattern questions and balanced difficulty coverage.`
+                      : teachingExamSlug === 'kvs'
+                        ? `KVS PRT Tier-1 Mock Test ${testNumber} with 100 questions (300 marks) and a 120-minute timer covering General Reasoning, Numeric Ability, Computer Literacy, GK, English, and Hindi.`
+                        : `Mock Test ${testNumber} for ${exam.title} with exam-pattern questions and balanced difficulty coverage.`
         });
       }).join('');
     }
