@@ -46,7 +46,11 @@ window.mockTestData = (() => {
       description: 'KVS PRT Tier-1 mock tests with 100 questions (300 marks) and a 120-minute timer covering General Reasoning, Numeric Ability, Computer Literacy, GK, English & Hindi.',
       practiceIntro: 'Attempt KVS PRT Tier-1 full-length mock tests with 100 questions and a 120-minute timer to qualify for Tier-2.'
     },
-    dsssb: createExam('dsssb', 'DSSSB', 'Teaching Exams'),
+    dsssb: {
+      ...createExam('dsssb', 'DSSSB PRT', 'Teaching Exams', 'Intermediate', 120, 200),
+      description: 'DSSSB PRT (Assistant Teacher Primary) mock tests with 200 questions (200 marks) and a 120-minute timer covering Section A (GA, Reasoning, Arithmetic, Hindi, English) and Section B (Teaching Methodology / NCTE Pedagogy).',
+      practiceIntro: 'Attempt DSSSB PRT One-Tier CBT mock tests with 200 questions, 200 marks, and a 120-minute timer (-0.25 negative marking).'
+    },
     pti: createExam('pti', 'PTI', 'Teaching Exams', 'Beginner', 45, 40),
     'assistant-professor': createExam('assistant-professor', 'Assistant Professor', 'Teaching Exams', 'Advanced', 90, 75),
     'ugc-net': {
