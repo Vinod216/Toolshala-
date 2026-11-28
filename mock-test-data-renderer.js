@@ -24,13 +24,14 @@
     ptet: 'PTET ke liye teaching aptitude, reasoning aur exam pattern based mock practice.',
     reet: 'REET level-1/2 pattern aligned pedagogy aur subject-mix practice tests.',
     ctet: 'CTET paper-wise practice with classroom pedagogy and child development topics.',
-    kvs: 'KVS recruitment style teaching + aptitude mock tests for better score confidence.',
+    kvs: 'KVS PRT Tier-1 ke liye General Reasoning, Numeric Ability, Computer Literacy, GK, English aur Hindi mock tests.',
     dsssb: 'DSSSB teaching posts ke liye targeted section-wise and full-length practice.',
     '2nd-grade': '2nd Grade teacher exam pattern ke saath high-yield revision mock tests.',
     '3rd-grade': '3rd Grade recruitment prep ke liye easy-to-start progressive mocks.',
     '1st-grade': '1st Grade lecturer level depth ke liye advanced mock-test sequence.',
     pti: 'PTI teaching eligibility prep with sports-education and aptitude oriented MCQs.',
-    'assistant-professor': 'Assistant Professor level conceptual + objective exam simulation practice.'
+    'assistant-professor': 'Assistant Professor level conceptual + objective exam simulation practice.',
+    'ugc-net': 'UGC NET (JRF & Assistant Professor) ke liye Paper-1 Teaching/Research Aptitude aur Paper-2 subject-wise practice sets.'
   };
   const rajasthanExamHighlights = {
     ras: 'RAS prelims-focused mock tests with GS coverage, reasoning, and exam-time strategy.',
@@ -216,7 +217,7 @@
     if (!category) return;
     document.getElementById('category-title').textContent = category.title;
     document.getElementById('category-intro').textContent = category.slug === 'teaching-exams'
-      ? 'Teaching Exams ke liye exam-wise preparation hub. Apna exam select karo aur BSTC, PTET, REET, CTET, KVS, DSSSB, 2nd Grade, 3rd Grade aur other tracks par smart practice start karo.'
+      ? 'Teaching Exams ke liye exam-wise preparation hub. Apna exam select karo aur BSTC, PTET, REET, CTET, 3rd Grade, 2nd Grade, 1st Grade, KVS PRT, UGC NET aur other tracks par smart practice start karo.'
       : category.slug === 'rajasthan-govt-exams'
         ? 'Rajasthan Govt Exams ke liye exam-wise preparation hub. RAS, Sub Inspector, CET 12th, CET Graduation, VDO, Patwar, Jail Prahari aur other tracks par structured practice start karo.'
         : category.slug === 'central-govt-exams'
@@ -302,7 +303,12 @@
               title: 'KVS PRT Tier 1 Mock Tests 1-10 | 100 Questions, 300 Marks | ToolShala',
               description: 'Practice KVS PRT Mock Test 1 to 10 for Tier-1 with 100 questions, 120-minute timer, General Reasoning, Numeric Ability, Computer Literacy, GK, English and Hindi on ToolShala.'
             }
-          : {
+          : teachingExamSlug === 'ugc-net'
+            ? {
+                title: 'UGC NET Paper 1 Mock Tests 1-10 | 50 Questions, 100 Marks | ToolShala',
+                description: 'Practice NTA UGC NET Paper 1 Mock Test 1 to 10 with 50 questions, 60-minute timer, covering all 10 units of Teaching & Research Aptitude on ToolShala.'
+              }
+            : {
           title: `${exam.title} Mock Tests | Teaching Exams | ToolShala`,
           description: `Practice ${exam.title} with 10 full-length mock tests, timed questions, and exam-focused preparation on ToolShala.`
         };
@@ -378,6 +384,26 @@
           ? './kvs-prt-mock-test-9.html'
           : teachingExamSlug === 'kvs' && testNumber === 10
           ? './kvs-prt-mock-test-10.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 1
+          ? './ugc-net-mock-test-1.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 2
+          ? './ugc-net-mock-test-2.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 3
+          ? './ugc-net-mock-test-3.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 4
+          ? './ugc-net-mock-test-4.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 5
+          ? './ugc-net-mock-test-5.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 6
+          ? './ugc-net-mock-test-6.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 7
+          ? './ugc-net-mock-test-7.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 8
+          ? './ugc-net-mock-test-8.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 9
+          ? './ugc-net-mock-test-9.html'
+          : teachingExamSlug === 'ugc-net' && testNumber === 10
+          ? './ugc-net-mock-test-10.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 1
           ? './2nd-grade-mock-test-1.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 2
@@ -503,6 +529,8 @@
             ? { questionsCount: 150, duration: '150 min' }
             : teachingExamSlug === '2nd-grade' || teachingExamSlug === 'kvs'
               ? { questionsCount: 100, duration: '120 min' }
+            : teachingExamSlug === 'ugc-net'
+              ? { questionsCount: 50, duration: '60 min' }
             : {}),
           ctaLink: customCtaLink,
           title: teachingExamSlug === 'kvs' ? `KVS PRT Mock Test ${testNumber}` : `${exam.title} Mock Test ${testNumber}`,
@@ -520,6 +548,8 @@
                       ? thirdGradeMockDescriptions[testNumber]
                       : teachingExamSlug === 'kvs'
                         ? `KVS PRT Tier-1 Mock Test ${testNumber} with 100 questions (300 marks) and a 120-minute timer covering General Reasoning, Numeric Ability, Computer Literacy, GK, English, and Hindi.`
+                        : teachingExamSlug === 'ugc-net'
+                          ? `UGC NET Paper-1 Mock Test ${testNumber} with 50 questions (100 marks) and a 60-minute timer covering all 10 units of Teaching & Research Aptitude.`
                         : `Mock Test ${testNumber} for ${exam.title} with exam-pattern questions and balanced difficulty coverage.`
         });
       }).join('');
