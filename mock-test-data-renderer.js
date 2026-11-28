@@ -25,7 +25,7 @@
     reet: 'REET level-1/2 pattern aligned pedagogy aur subject-mix practice tests.',
     ctet: 'CTET paper-wise practice with classroom pedagogy and child development topics.',
     kvs: 'KVS PRT Tier-1 ke liye General Reasoning, Numeric Ability, Computer Literacy, GK, English aur Hindi mock tests.',
-    dsssb: 'DSSSB teaching posts ke liye targeted section-wise and full-length practice.',
+    dsssb: 'DSSSB PRT (Assistant Teacher Primary) ke liye Section A (100 Qs) aur Section B Teaching Methodology (100 Qs) par aadharit mock tests.',
     '2nd-grade': '2nd Grade teacher exam pattern ke saath high-yield revision mock tests.',
     '3rd-grade': '3rd Grade recruitment prep ke liye easy-to-start progressive mocks.',
     '1st-grade': '1st Grade lecturer level depth ke liye advanced mock-test sequence.',
@@ -404,6 +404,26 @@
           ? './ugc-net-mock-test-9.html'
           : teachingExamSlug === 'ugc-net' && testNumber === 10
           ? './ugc-net-mock-test-10.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 1
+          ? './dsssb-prt-mock-test-1.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 2
+          ? './dsssb-prt-mock-test-2.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 3
+          ? './dsssb-prt-mock-test-3.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 4
+          ? './dsssb-prt-mock-test-4.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 5
+          ? './dsssb-prt-mock-test-5.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 6
+          ? './dsssb-prt-mock-test-6.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 7
+          ? './dsssb-prt-mock-test-7.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 8
+          ? './dsssb-prt-mock-test-8.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 9
+          ? './dsssb-prt-mock-test-9.html'
+          : teachingExamSlug === 'dsssb' && testNumber === 10
+          ? './dsssb-prt-mock-test-10.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 1
           ? './2nd-grade-mock-test-1.html'
           : teachingExamSlug === '2nd-grade' && testNumber === 2
